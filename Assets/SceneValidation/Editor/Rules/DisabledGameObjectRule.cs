@@ -1,3 +1,4 @@
+using UnityEditor;
 using UnityEngine;
 
 
@@ -6,10 +7,11 @@ public sealed class DisabledGameObjectRule : ValidationRule {
 
 	public override string Id => "disabled_gameObject";
 	public override string Name => "Disabled GameObject";
-	public override ValidationSeverity DefaultSeverity => ValidationSeverity.Warning;
 	public override string Description => "Checks the scene for disabled GameObjects.";
-
+	
+	public override ValidationSeverity DefaultSeverity => ValidationSeverity.Warning;
 	public override ValidationCategory Category => ValidationCategory.GameObjects;
+	public override bool CanAutoFix => true;
 
 
 	public override void Validate(ValidationContext context, ValidationResultCollection results) {
@@ -27,6 +29,20 @@ public sealed class DisabledGameObjectRule : ValidationRule {
 		foreach (Transform child in gameObject.transform) {
 			ValidateGameObject(child.gameObject, results);
 		}
+	}
+
+
+	public override bool TryAutoFix(ValidationContext context, ValidationResult result) {
+		if (result.Target is not GameObject gameObject)
+			return false;
+
+		Undo.RecordObject(gameObject, $"Fix {Name}");
+
+		gameObject.SetActive(true);
+
+		EditorUtility.SetDirty(gameObject);
+
+		return true;
 	}
 
 }

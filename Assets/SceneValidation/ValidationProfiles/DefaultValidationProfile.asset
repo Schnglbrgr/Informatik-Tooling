@@ -13,15 +13,18 @@ MonoBehaviour:
   m_Name: DefaultValidationProfile
   m_EditorClassIdentifier: Assembly-CSharp-Editor::ValidationProfile
   ruleConfigurations:
-  - ruleId: gameObject_naming
-    enabled: 1
-    severityOverride: 1
-  - ruleId: unusual_transform_scale
+  - ruleId: gameObject-duplicate_name
     enabled: 1
     severityOverride: 1
   - ruleId: missing_script
     enabled: 1
     severityOverride: 3
+  - ruleId: unusual_transform_scale
+    enabled: 1
+    severityOverride: 1
+  - ruleId: gameObject_naming
+    enabled: 1
+    severityOverride: 1
   - ruleId: disabled_gameObject
     enabled: 1
     severityOverride: 2

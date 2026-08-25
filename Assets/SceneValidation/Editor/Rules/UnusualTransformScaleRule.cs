@@ -5,12 +5,10 @@ using UnityEngine;
 public sealed class UnusualTransformScaleRule : ValidationRule {
 
 	public override string Id => "unusual_transform_scale";
-
 	public override string Name => "Unusual Transform Scale";
-	public override ValidationSeverity DefaultSeverity => ValidationSeverity.Info;
-
 	public override string Description => "Checks for unusually large or negative scales.";
-
+	
+	public override ValidationSeverity DefaultSeverity => ValidationSeverity.Info;
 	public override ValidationCategory Category => ValidationCategory.GameObjects;
 
 

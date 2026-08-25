@@ -10,6 +10,16 @@ public class ValidationProfile : ScriptableObject {
 	public IReadOnlyList<RuleConfiguration> RuleConfigurations => ruleConfigurations;
 
 
+	public RuleConfiguration GetRuleConfiguration(string ruleId) {
+		foreach (var configuration in ruleConfigurations) {
+			if (configuration.ruleId == ruleId)
+				return configuration;
+		}
+
+		return null;
+	}
+
+
 	public void ResetToDefaultRules() {
 		ruleConfigurations.Clear();
 

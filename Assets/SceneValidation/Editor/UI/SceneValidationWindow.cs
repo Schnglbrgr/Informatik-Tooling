@@ -36,6 +36,34 @@ public class SceneValidationWindow : EditorWindow {
 	}
 
 
+	private void OnEnable() {
+		EditorSceneManager.activeSceneChangedInEditMode += OnActiveSceneChanged;
+		Undo.undoRedoPerformed += OnUndoRedoPerformed;
+	}
+
+
+	private void OnDisable() {
+		EditorSceneManager.activeSceneChangedInEditMode -= OnActiveSceneChanged;
+		Undo.undoRedoPerformed -= OnUndoRedoPerformed;
+	}
+
+
+	private void OnActiveSceneChanged(Scene previousScene, Scene newScene) {
+		RefreshHeader();
+		ClearResults();
+	}
+
+
+	private void OnUndoRedoPerformed() {
+		var scene = SceneManager.GetActiveScene();
+
+		if (!scene.IsValid() || !_selectedProfile || _results == null)
+			return;
+
+		ValidateScene();
+	}
+
+
 	private void CreateGUI() {
 		var styleSheet = AssetDatabase.LoadAssetAtPath<StyleSheet>("Assets/SceneValidation/Editor/UI/SceneValidationWindow.uss");
 
@@ -82,8 +110,7 @@ public class SceneValidationWindow : EditorWindow {
 		toolbar.Add(validateButton);
 		toolbar.Add(clearButton);
 
-		var spacer = new ToolbarSpacer();
-		spacer.style.flexGrow = 1;
+		var spacer = new ToolbarSpacer { style = { flexGrow = 1 } };
 		toolbar.Add(spacer);
 
 		var saveButton = new Button(SaveScene) { text = "Save Scene" };
@@ -177,7 +204,7 @@ public class SceneValidationWindow : EditorWindow {
 
 
 	private void BuildResultArea() {
-		var container = new TwoPaneSplitView(0, 350, TwoPaneSplitViewOrientation.Horizontal);
+		var container = new TwoPaneSplitView(0, 400, TwoPaneSplitViewOrientation.Horizontal);
 		container.AddToClassList("validation-results-container");
 
 		var resultPanel = new VisualElement();
@@ -189,7 +216,7 @@ public class SceneValidationWindow : EditorWindow {
 		container.Add(resultPanel);
 		container.Add(_detailsPanel);
 
-		_resultList = new ListView() { fixedItemHeight = 64, selectionType = SelectionType.Single };
+		_resultList = new ListView() { fixedItemHeight = 64, virtualizationMethod = CollectionVirtualizationMethod.DynamicHeight, selectionType = SelectionType.Single };
 		_resultList.selectionChanged += OnResultSelected;
 
 		resultPanel.Add(_resultList);
@@ -370,17 +397,29 @@ public class SceneValidationWindow : EditorWindow {
 			_detailsPanel.Add(targetField);
 
 			var buttonRow = new VisualElement();
-			buttonRow.AddToClassList("validation-button-row");
+			buttonRow.AddToClassList("rule-button-row-container");
 
 			var selectButton = new Button(() => { Selection.activeObject = result.Target; }) { text = "Select" };
+			selectButton.AddToClassList("select-button");
 			var pingButton = new Button(() => { EditorGUIUtility.PingObject(result.Target); }) { text = "Ping" };
+			pingButton.AddToClassList("ping-button");
 
 			buttonRow.Add(selectButton);
 			buttonRow.Add(pingButton);
 
+			if (rule is { CanAutoFix: true }) {
+				var spacer = new ToolbarSpacer();
+				spacer.style.flexGrow = 1;
+				buttonRow.Add(spacer);
+
+				var fixButton = new Button(() => AutoFixResult(result)) { text = "Auto Fix" };
+				fixButton.AddToClassList("auto-fix-button");
+
+				buttonRow.Add(fixButton);
+			}
+
 			_detailsPanel.Add(buttonRow);
 		}
-
 	}
 
 
@@ -404,8 +443,29 @@ public class SceneValidationWindow : EditorWindow {
 	}
 
 
-	private void FixResult(ValidationResult result) {
-		Debug.LogWarning($"Auto-fix is not implemented yet for '{result.RuleId}'.");
+	private void AutoFixResult(ValidationResult result) {
+		if (!_selectedProfile)
+			return;
+
+		var scene = SceneManager.GetActiveScene();
+
+		if (!scene.IsValid())
+			return;
+
+		var context = new ValidationContext(scene, _selectedProfile);
+
+		var runner = new ValidationRunner();
+
+		bool success = runner.TryAutoFix(context, result);
+
+		if (!success) {
+			Debug.LogWarning($"Could not auto-fix '{result.RuleId}'.");
+			return;
+		}
+
+		Debug.Log($"Successfully fixed '{result.RuleId}'.");
+
+		ValidateScene();
 	}
 
 

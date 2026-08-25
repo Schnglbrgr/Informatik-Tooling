@@ -42,4 +42,33 @@ public sealed class ValidationRunner {
 		return results;
 	}
 
+
+	public bool TryAutoFix(ValidationContext context, ValidationResult result) {
+		if (result == null)
+			return false;
+
+		var profile = context.Profile;
+
+		if (!profile)
+			return false;
+
+		var configuration = profile.GetRuleConfiguration(result.RuleId);
+
+		if (configuration == null)
+			return false;
+
+		if (!configuration.enabled)
+			return false;
+
+		var rule = ValidationRuleRegistry.CreateRule(configuration.ruleId, configuration.severityOverride);
+
+		if (rule == null)
+			return false;
+
+		if (!rule.CanAutoFix)
+			return false;
+
+		return rule.TryAutoFix(context, result);
+	}
+
 }

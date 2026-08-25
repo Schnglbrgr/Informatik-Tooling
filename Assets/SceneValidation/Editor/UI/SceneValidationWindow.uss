@@ -53,7 +53,7 @@
 
 
 .validate-button {
-    min-width: 120px;
+    -unity-font-style: bold;
 
     margin-left: 8px;
     margin-right: 8px;
@@ -61,17 +61,40 @@
 
 
 .clear-button {
-    min-width: 70px;
+    -unity-font-style: bold;
 
     margin-left: 8px;
     margin-right: 8px;
 }
 
 .save-button {
-    min-width: 100px;
     margin-left: 8px;
     margin-right: 8px;
-    
+
+    -unity-font-style: bold-and-italic;
+}
+
+.rule-button-row-container {
+    padding-top: 12px;
+    margin: 4px;
+    flex-direction: row;
+}
+
+.select-button {
+    min-width: 120px;
+    min-height: 32px;
+    -unity-font-style: bold;
+}
+
+.ping-button {
+    min-width: 120px;
+    min-height: 32px;
+    -unity-font-style: bold;
+}
+
+.auto-fix-button {
+    min-width: 120px;
+    min-height: 32px;
     -unity-font-style: bold-and-italic;
 }
 
@@ -114,8 +137,8 @@
 
 
 .validation-result {
-    padding: 4px 8px;
-    margin-bottom: 2px;
+    padding: 16px 10px;
+    margin-bottom: 6px;
 }
 
 .validation-result-severity {
