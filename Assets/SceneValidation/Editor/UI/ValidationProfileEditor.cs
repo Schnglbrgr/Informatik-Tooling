@@ -31,20 +31,20 @@ public class ValidationProfileEditor : Editor {
 		EditorGUILayout.Space();
 
 		EditorGUILayout.LabelField("Validation Profile", EditorStyles.boldLabel);
-		EditorGUILayout.LabelField($"Rules: {_profile.Rules.Count}");
+		EditorGUILayout.LabelField($"Rules: {_profile.RuleConfigurations.Count}");
 
 		EditorGUILayout.Space();
 	}
 
 
 	private void DrawRules() {
-		foreach (var config in _profile.Rules)
+		foreach (var config in _profile.RuleConfigurations)
 			DrawRule(config);
 	}
 
 
 	private void DrawRule(RuleConfiguration config) {
-		var rule = ValidationRuleRegistry.CreateRule(config.ruleId);
+		var rule = ValidationRuleRegistry.CreateRule(config.ruleId, config.severityOverride);
 
 		EditorGUILayout.BeginVertical("box");
 
@@ -66,7 +66,8 @@ public class ValidationProfileEditor : Editor {
 
 		EditorGUILayout.BeginHorizontal();
 
-		config.enabled = EditorGUILayout.ToggleLeft(rule.Name, config.enabled);
+		config.enabled = EditorGUILayout.Toggle(config.enabled, GUILayout.Width(18));
+		EditorGUILayout.LabelField(rule.Name, EditorStyles.whiteBoldLabel);
 
 		GUILayout.FlexibleSpace();
 
@@ -83,7 +84,7 @@ public class ValidationProfileEditor : Editor {
 
 		EditorGUILayout.LabelField("Category", rule.Category.ToString());
 
-		config.severityOverride = (SeverityOverrideMode)EditorGUILayout.EnumPopup("Severity", config.severityOverride);
+		config.severityOverride = (ValidationSeverity)EditorGUILayout.EnumPopup("Severity", config.severityOverride);
 
 		EditorGUILayout.EndVertical();
 

@@ -27,25 +27,31 @@ public class ValidationResultElement : VisualElement {
 
 
 	public void Bind(ValidationResult result) {
-		_severityLabel.text = GetSeverityText(result.Severity);
+		_severityLabel.text = result.Severity.ToString().ToUpper();
 		_ruleLabel.text = result.RuleName;
 		_messageLabel.text = result.Message;
 
+		RemoveSeverityClasses();
+
+		var severityClass = GetSeverityClass(result.Severity);
+		var severityTextClass = GetSeverityTextClass(result.Severity);
+
+		if (!string.IsNullOrEmpty(severityClass))
+			AddToClassList(severityClass);
+
+		if (!string.IsNullOrEmpty(severityTextClass))
+			_severityLabel.AddToClassList(severityTextClass);
+	}
+
+
+	private void RemoveSeverityClasses() {
 		RemoveFromClassList("severity-error");
 		RemoveFromClassList("severity-warning");
 		RemoveFromClassList("severity-info");
 
-		AddToClassList(GetSeverityClass(result.Severity));
-	}
-
-
-	private string GetSeverityText(ValidationSeverity severity) {
-		return severity switch {
-			ValidationSeverity.Error => "ERROR",
-			ValidationSeverity.Warning => "WARNING",
-			ValidationSeverity.Info => "INFO",
-			_ => "INFO"
-		};
+		_severityLabel.RemoveFromClassList("severity-error-text");
+		_severityLabel.RemoveFromClassList("severity-warning-text");
+		_severityLabel.RemoveFromClassList("severity-info-text");
 	}
 
 
@@ -54,7 +60,17 @@ public class ValidationResultElement : VisualElement {
 			ValidationSeverity.Error => "severity-error",
 			ValidationSeverity.Warning => "severity-warning",
 			ValidationSeverity.Info => "severity-info",
-			_ => "severity-info"
+			_ => string.Empty
+		};
+	}
+
+
+	private string GetSeverityTextClass(ValidationSeverity severity) {
+		return severity switch {
+			ValidationSeverity.Error => "severity-error-text",
+			ValidationSeverity.Warning => "severity-warning-text",
+			ValidationSeverity.Info => "severity-info-text",
+			_ => string.Empty
 		};
 	}
 

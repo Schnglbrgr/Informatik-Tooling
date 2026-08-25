@@ -6,7 +6,7 @@ public sealed class MissingScriptRule : ValidationRule {
 
 	public override string Id => "missing_script";
 	public override string Name => "Missing Script";
-
+	public override ValidationSeverity DefaultSeverity => ValidationSeverity.Error;
 	public override string Description => "Checks the scene for GameObjects containing missing scripts.";
 
 	public override ValidationCategory Category => ValidationCategory.References;
@@ -26,8 +26,8 @@ public sealed class MissingScriptRule : ValidationRule {
 
 		foreach (Component component in components) {
 			if (!component)
-				results.Error(Id, Name, "Missing script detected.",
-					$"GameObject '{gameObject.name}' contains a missing script. " + "Missing scripts can cause unexpected behaviour " +
+				results.AddResult(Severity, Id, Name, "Missing script detected.",
+					$"GameObject <i><b>'{gameObject.name}'</i></b> contains a missing script. " + "Missing scripts can cause unexpected behaviour " +
 					"and should normally be removed or restored.", gameObject);
 		}
 

@@ -13,8 +13,7 @@ public sealed class ValidationResult {
 	public bool CanAutoFix { get; }
 
 
-	public ValidationResult(ValidationSeverity severity, string ruleId, string ruleName, string message, string details, Object target = null,
-		bool canAutoFix = false) {
+	public ValidationResult(ValidationSeverity severity, string ruleId, string ruleName, string message, string details, Object target = null, bool canAutoFix = false) {
 		Severity = severity;
 		RuleId = ruleId;
 		RuleName = ruleName;

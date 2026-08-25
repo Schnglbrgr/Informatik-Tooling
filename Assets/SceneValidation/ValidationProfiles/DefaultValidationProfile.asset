@@ -12,16 +12,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c7c822b2a0e5dbf4c803feb644cfc07b, type: 3}
   m_Name: DefaultValidationProfile
   m_EditorClassIdentifier: Assembly-CSharp-Editor::ValidationProfile
-  rules:
-  - ruleId: disabled_gameObject
-    enabled: 1
-    severityOverride: 0
-  - ruleId: missing_script
-    enabled: 1
-    severityOverride: 0
-  - ruleId: unusual_transform_scale
-    enabled: 1
-    severityOverride: 0
+  ruleConfigurations:
   - ruleId: gameObject_naming
     enabled: 1
-    severityOverride: 0
+    severityOverride: 1
+  - ruleId: unusual_transform_scale
+    enabled: 1
+    severityOverride: 1
+  - ruleId: missing_script
+    enabled: 1
+    severityOverride: 3
+  - ruleId: disabled_gameObject
+    enabled: 1
+    severityOverride: 2

@@ -7,6 +7,7 @@ public sealed class UnusualTransformScaleRule : ValidationRule {
 	public override string Id => "unusual_transform_scale";
 
 	public override string Name => "Unusual Transform Scale";
+	public override ValidationSeverity DefaultSeverity => ValidationSeverity.Info;
 
 	public override string Description => "Checks for unusually large or negative scales.";
 
@@ -24,11 +25,11 @@ public sealed class UnusualTransformScaleRule : ValidationRule {
 		var scale = gameObject.transform.localScale;
 
 		if (scale.x > 10f || scale.y > 10f || scale.z > 10f) {
-			results.Warning(Id, Name, $"GameObject '{gameObject.name}' has an unusual scale.", $"Current scale: {scale}.", gameObject);
+			results.AddResult(Severity, Id, Name, $"GameObject <i><b>'{gameObject.name}'</i></b> has an unusual scale.", $"Current scale: {scale}.", gameObject);
 		}
 
 		if (scale.x < 0 || scale.y < 0 || scale.z < 0) {
-			results.Warning(Id, Name, $"GameObject '{gameObject.name}' has negative scale.", "Current scale: {scale}.", gameObject);
+			results.AddResult(Severity, Id, Name, $"GameObject <i><b>'{gameObject.name}'</i></b> has negative scale.", "Current scale: {scale}.", gameObject);
 		}
 
 		foreach (Transform child in gameObject.transform) {

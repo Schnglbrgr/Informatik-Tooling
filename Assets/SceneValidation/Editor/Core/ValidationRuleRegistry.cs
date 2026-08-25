@@ -15,11 +15,14 @@ public static class ValidationRuleRegistry {
 	}
 
 
-	public static ValidationRule CreateRule(string ruleId) {
+	public static ValidationRule CreateRule(string ruleId, ValidationSeverity ruleSeverity) {
 		if (!RulesById.TryGetValue(ruleId, out var type))
 			return null;
 
-		return (ValidationRule)Activator.CreateInstance(type);
+		ValidationRule rule = (ValidationRule)Activator.CreateInstance(type);
+		rule.SetSeverity(ruleSeverity);
+
+		return rule;
 	}
 
 
@@ -28,7 +31,7 @@ public static class ValidationRuleRegistry {
 	}
 
 
-	public static void Refresh() {
+	private static void Refresh() {
 		RuleTypes.Clear();
 		RulesById.Clear();
 

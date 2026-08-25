@@ -1,9 +1,9 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEditor.SceneManagement;
 using UnityEditor.UIElements;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UIElements;
 
 
@@ -23,6 +23,8 @@ public class SceneValidationWindow : EditorWindow {
 
 	private ValidationResultCollection _results;
 
+	private List<ValidationResult> _displayResults = new();
+
 
 	[MenuItem("Tools/Scene Validation/Validation Window &v")]
 	public static void OpenWindow() {
@@ -30,7 +32,7 @@ public class SceneValidationWindow : EditorWindow {
 
 		window.titleContent = new GUIContent("Scene Validation");
 
-		window.minSize = new Vector2(900, 500);
+		window.minSize = new Vector2(900, 650);
 	}
 
 
@@ -74,16 +76,31 @@ public class SceneValidationWindow : EditorWindow {
 		var validateButton = new Button(ValidateScene) { text = "Validate Scene" };
 		validateButton.AddToClassList("validate-button");
 
+		var clearButton = new Button(ClearResults) { text = "Clear" };
+		clearButton.AddToClassList("clear-button");
+
 		toolbar.Add(validateButton);
+		toolbar.Add(clearButton);
+
+		var spacer = new ToolbarSpacer();
+		spacer.style.flexGrow = 1;
+		toolbar.Add(spacer);
+
+		var saveButton = new Button(SaveScene) { text = "Save Scene" };
+		saveButton.AddToClassList("save-button");
+
+		toolbar.Add(saveButton);
+
 		rootVisualElement.Add(toolbar);
 	}
 
 
 	private void BuildHeader() {
 		var header = new VisualElement();
-		header.AddToClassList("validation-header");
+		header.AddToClassList("validation-header-container");
 
 		_sceneLabel = new Label();
+		_sceneLabel.AddToClassList("universal-title-big");
 
 		var profileContainer = new VisualElement();
 		profileContainer.AddToClassList("validation-profile-container");
@@ -113,7 +130,7 @@ public class SceneValidationWindow : EditorWindow {
 
 
 	private void RefreshHeader() {
-		var scene = EditorSceneManager.GetActiveScene();
+		var scene = SceneManager.GetActiveScene();
 
 		_sceneLabel.text = scene.IsValid() ? $"Scene: {scene.name}" : "Scene: No Scene";
 
@@ -123,15 +140,15 @@ public class SceneValidationWindow : EditorWindow {
 
 	private void BuildSummary() {
 		var summary = new VisualElement();
-		summary.AddToClassList("validation-summary");
+		summary.AddToClassList("validation-summary-container");
 
-		var errorContainer = CreateSummaryItem("Errors", out _errorCount);
+		var errorContainer = CreateSummaryItem("Errors:", out _errorCount);
 		errorContainer.AddToClassList("summary-error");
 
-		var warningContainer = CreateSummaryItem("Warnings", out _warningCount);
+		var warningContainer = CreateSummaryItem("Warnings:", out _warningCount);
 		warningContainer.AddToClassList("summary-warning");
 
-		var infoContainer = CreateSummaryItem("Info", out _infoCount);
+		var infoContainer = CreateSummaryItem("Infos:", out _infoCount);
 		infoContainer.AddToClassList("summary-info");
 
 		summary.Add(errorContainer);
@@ -144,10 +161,10 @@ public class SceneValidationWindow : EditorWindow {
 
 	private VisualElement CreateSummaryItem(string label, out Label countLabel) {
 		var container = new VisualElement();
-		container.AddToClassList("validation-summary-item");
+		container.AddToClassList("validation-summary-item-container");
 
 		var titleLabel = new Label(label);
-		titleLabel.AddToClassList("validation-summary-title");
+		titleLabel.AddToClassList("universal-title-big");
 
 		countLabel = new Label("0");
 		countLabel.AddToClassList("validation-summary-count");
@@ -164,7 +181,10 @@ public class SceneValidationWindow : EditorWindow {
 		container.AddToClassList("validation-results-container");
 
 		var resultPanel = new VisualElement();
+		resultPanel.AddToClassList("validation-result-panel");
+
 		_detailsPanel = new VisualElement();
+		_detailsPanel.AddToClassList("validation-details-panel");
 
 		container.Add(resultPanel);
 		container.Add(_detailsPanel);
@@ -181,7 +201,7 @@ public class SceneValidationWindow : EditorWindow {
 
 
 	private void ValidateScene() {
-		var scene = EditorSceneManager.GetActiveScene();
+		var scene = SceneManager.GetActiveScene();
 
 		if (!scene.IsValid()) {
 			Debug.LogWarning("No valid scene is currently open");
@@ -199,6 +219,10 @@ public class SceneValidationWindow : EditorWindow {
 		_results = runner.Validate(context);
 
 		if (_results.Results.Count == 0) {
+			ShowSuccessState();
+		}
+		else {
+			_resultList.style.display = DisplayStyle.Flex;
 			ShowEmptyDetails();
 		}
 
@@ -206,18 +230,69 @@ public class SceneValidationWindow : EditorWindow {
 	}
 
 
+	private void ClearResults() {
+		_results = null;
+
+		_displayResults.Clear();
+
+		_resultList.itemsSource = null;
+		_resultList.style.display = DisplayStyle.Flex;
+		_resultList.Rebuild();
+
+		_errorCount.text = "0";
+		_warningCount.text = "0";
+		_infoCount.text = "0";
+
+		ShowClearedState();
+	}
+
+
+	private void SaveScene() {
+		var scene = SceneManager.GetActiveScene();
+
+		if (!scene.IsValid()) {
+			Debug.LogWarning("No valid scene is currently open.");
+			return;
+		}
+
+		if (!scene.isDirty) {
+			Debug.Log("Scene has no unsaved changes.");
+			return;
+		}
+
+		EditorSceneManager.SaveScene(scene);
+	}
+
+
+	private void ShowClearedState() {
+		_detailsPanel.Clear();
+
+		var titleLabel = new Label("Validation cleared");
+		titleLabel.AddToClassList("universal-title-big");
+
+		var description = new Label("Press 'Validate Scene' to validate the scene again.");
+		description.AddToClassList("universal-text");
+
+		_detailsPanel.Add(titleLabel);
+		_detailsPanel.Add(description);
+	}
+
+
 	private void RefreshResults() {
 		if (_results == null)
 			return;
 
-		var results = _results.Results;
+		_displayResults = new List<ValidationResult>(_results.Results);
 
-		_resultList.itemsSource = results as IList;
+		_displayResults.Sort((a, b) => GetSeverityOrder(a.Severity).CompareTo(GetSeverityOrder(b.Severity)));
+
+		_resultList.itemsSource = _displayResults;
 
 		_resultList.makeItem = () => new ValidationResultElement();
 
 		_resultList.bindItem = (element, index) => {
-			var result = results[index];
+			var result = _displayResults[index];
+
 			var resultElement = (ValidationResultElement)element;
 
 			resultElement.Bind(result);
@@ -241,6 +316,16 @@ public class SceneValidationWindow : EditorWindow {
 	}
 
 
+	private int GetSeverityOrder(ValidationSeverity severity) {
+		return severity switch {
+			ValidationSeverity.Error => 0,
+			ValidationSeverity.Warning => 1,
+			ValidationSeverity.Info => 2,
+			_ => 99
+		};
+	}
+
+
 	private void SelectTarget(ValidationResult result) {
 		if (!result.Target)
 			return;
@@ -255,17 +340,19 @@ public class SceneValidationWindow : EditorWindow {
 		_detailsPanel.Clear();
 
 		var titleLabel = new Label(result.RuleName);
-		titleLabel.AddToClassList("validation-detail-title");
+		titleLabel.AddToClassList("universal-title-big");
 		_detailsPanel.Add(titleLabel);
 
 
 		var severityLabel = new Label(result.Severity.ToString().ToUpper());
-		severityLabel.AddToClassList("validation-detail-severity");
+		severityLabel.AddToClassList("universal-title-small");
+		severityLabel.AddToClassList(GetSeverityTextClass(result.Severity));
+
 		_detailsPanel.Add(severityLabel);
 
 		AddSection("Problem", result.Message);
 
-		var rule = ValidationRuleRegistry.CreateRule(result.RuleId);
+		var rule = ValidationRuleRegistry.CreateRule(result.RuleId, result.Severity);
 
 		if (rule != null && !string.IsNullOrWhiteSpace(rule.Description)) {
 			AddSection("About this rule", rule.Description);
@@ -277,7 +364,7 @@ public class SceneValidationWindow : EditorWindow {
 
 		if (result.Target) {
 			var targetField = new ObjectField("Target") { objectType = typeof(Object), value = result.Target };
-
+			targetField.AddToClassList("universal-title-small");
 			targetField.SetEnabled(false);
 
 			_detailsPanel.Add(targetField);
@@ -302,13 +389,13 @@ public class SceneValidationWindow : EditorWindow {
 			return;
 
 		var section = new VisualElement();
-		section.AddToClassList("validation-detail-section");
+		section.AddToClassList("validation-detail-section-container");
 
 		var titleLabel = new Label(tl);
-		titleLabel.AddToClassList("validation-detail-section-title");
+		titleLabel.AddToClassList("universal-title-small");
 
 		var contentLabel = new Label(content);
-		contentLabel.AddToClassList("validation-detail-section-content");
+		contentLabel.AddToClassList("universal-text");
 
 		section.Add(titleLabel);
 		section.Add(contentLabel);
@@ -352,13 +439,13 @@ public class SceneValidationWindow : EditorWindow {
 	private void ShowEmptyDetails() {
 		_detailsPanel.Clear();
 
-		var title = new Label("No issue selected");
-		title.AddToClassList("validation-empty-title");
+		var titleLabel = new Label("No issue selected");
+		titleLabel.AddToClassList("universal-title-big");
 
 		var description = new Label("Select a validation result to view its details.");
-		description.AddToClassList("validation-empty-description");
+		description.AddToClassList("universal-text");
 
-		_detailsPanel.Add(title);
+		_detailsPanel.Add(titleLabel);
 		_detailsPanel.Add(description);
 	}
 
@@ -369,8 +456,19 @@ public class SceneValidationWindow : EditorWindow {
 		_detailsPanel.Clear();
 
 		var label = new Label("✓ Scene is valid!");
+		label.AddToClassList("universal-title-big");
 
 		_detailsPanel.Add(label);
+	}
+
+
+	private string GetSeverityTextClass(ValidationSeverity severity) {
+		return severity switch {
+			ValidationSeverity.Error => "severity-error-text",
+			ValidationSeverity.Warning => "severity-warning-text",
+			ValidationSeverity.Info => "severity-info-text",
+			_ => string.Empty
+		};
 	}
 
 }

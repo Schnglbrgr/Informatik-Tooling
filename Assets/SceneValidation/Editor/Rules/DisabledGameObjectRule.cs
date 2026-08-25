@@ -6,6 +6,7 @@ public sealed class DisabledGameObjectRule : ValidationRule {
 
 	public override string Id => "disabled_gameObject";
 	public override string Name => "Disabled GameObject";
+	public override ValidationSeverity DefaultSeverity => ValidationSeverity.Warning;
 	public override string Description => "Checks the scene for disabled GameObjects.";
 
 	public override ValidationCategory Category => ValidationCategory.GameObjects;
@@ -20,8 +21,7 @@ public sealed class DisabledGameObjectRule : ValidationRule {
 
 	private void ValidateGameObject(GameObject gameObject, ValidationResultCollection results) {
 		if (!gameObject.activeSelf) {
-			results.Warning(Id, Name, $"GameObject '{gameObject.name}' is disabled.", "This GameObject is currently inactive in the scene.",
-				gameObject);
+			results.AddResult(Severity, Id, Name, $"GameObject <i><b>'{gameObject.name}'</i></b> is disabled.", "This GameObject is currently inactive in the scene.", gameObject);
 		}
 
 		foreach (Transform child in gameObject.transform) {

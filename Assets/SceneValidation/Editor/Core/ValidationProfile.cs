@@ -5,24 +5,22 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "ValidationProfile", menuName = "Scene Validation/Validation Profile")]
 public class ValidationProfile : ScriptableObject {
 
-	[SerializeField] private List<RuleConfiguration> rules = new();
+	[SerializeField] private List<RuleConfiguration> ruleConfigurations = new();
 
-	public IReadOnlyList<RuleConfiguration> Rules => rules;
+	public IReadOnlyList<RuleConfiguration> RuleConfigurations => ruleConfigurations;
 
 
 	public void ResetToDefaultRules() {
-		rules.Clear();
+		ruleConfigurations.Clear();
 
 		foreach (var rule in ValidationRuleRegistry.CreateRules()) {
-			rules.Add(new RuleConfiguration {
-				ruleId = rule.Id, enabled = rule.IsEnabledByDefault, severityOverride = SeverityOverrideMode.UseRuleDefault
-			});
+			ruleConfigurations.Add(new RuleConfiguration { ruleId = rule.Id, enabled = rule.IsEnabledByDefault, severityOverride = rule.DefaultSeverity });
 		}
 	}
 
 
 	public bool HasRule(string ruleId) {
-		foreach (var rule in rules) {
+		foreach (var rule in ruleConfigurations) {
 			if (rule.ruleId == ruleId)
 				return true;
 		}
@@ -35,12 +33,12 @@ public class ValidationProfile : ScriptableObject {
 		if (HasRule(ruleId))
 			return;
 
-		rules.Add(new RuleConfiguration { ruleId = ruleId, enabled = true, severityOverride = SeverityOverrideMode.UseRuleDefault });
+		ruleConfigurations.Add(new RuleConfiguration { ruleId = ruleId, enabled = true, severityOverride = ValidationSeverity.UseRuleDefault });
 	}
 
 
 	public void RemoveRule(string ruleId) {
-		rules.RemoveAll(x => x.ruleId == ruleId);
+		ruleConfigurations.RemoveAll(x => x.ruleId == ruleId);
 	}
 
 }

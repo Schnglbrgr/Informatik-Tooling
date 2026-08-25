@@ -8,6 +8,6 @@ public class RuleConfiguration {
 	[SerializeField] public string ruleId;
 	[SerializeField] public bool enabled = true;
 
-	[SerializeField] public SeverityOverrideMode severityOverride = SeverityOverrideMode.UseRuleDefault;
+	[SerializeField] public ValidationSeverity severityOverride = ValidationSeverity.UseRuleDefault;
 
 }
