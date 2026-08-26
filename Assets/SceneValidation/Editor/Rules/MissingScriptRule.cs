@@ -29,7 +29,7 @@ public sealed class MissingScriptRule : ValidationRule {
 		foreach (Component component in components) {
 			if (!component)
 				results.AddResult(Severity, Id, Name, "Missing script detected.",
-					$"GameObject <i><b>'{gameObject.name}'</i></b> contains a missing script. " + "Missing scripts can cause unexpected behaviour " +
+					$"GameObject <i><b>{gameObject.name}</i></b> contains a missing script. " + "Missing scripts can cause unexpected behaviour " +
 					"and should normally be removed or restored.", gameObject);
 		}
 

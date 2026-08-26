@@ -27,7 +27,7 @@ public sealed class GameObjectNamingRule : ValidationRule {
 
 	private void ValidateGameObject(GameObject gameObject, ValidationResultCollection results) {
 		if (_cloneNameRegex.IsMatch(gameObject.name)) {
-			results.AddResult(Severity, Id, Name, $"GameObject <i><b>'{gameObject.name}'</i></b> appears to be a clone/copy.", "Consider renaming or reviewing this object.",
+			results.AddResult(Severity, Id, Name, $"GameObject <i><b>{gameObject.name}</i></b> appears to be a clone/copy.", "Consider renaming or reviewing this object.",
 				gameObject);
 		}
 

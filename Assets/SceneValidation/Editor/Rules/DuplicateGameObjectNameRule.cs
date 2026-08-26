@@ -40,7 +40,7 @@ public class DuplicateGameObjectNameRule : ValidationRule {
 				continue;
 
 			foreach (var gameObject in pair.Value) {
-				results.AddResult(Severity, Id, Name, $"GameObject <i><b>'{gameObject.name}'</b></i> has a duplicate sibling name.",
+				results.AddResult(Severity, Id, Name, $"GameObject <i><b>{gameObject.name}</b></i> has a duplicate sibling name.",
 					"Consider giving sibling GameObjects unique names.", gameObject);
 			}
 		}

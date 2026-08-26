@@ -16,13 +16,25 @@ MonoBehaviour:
   - ruleId: gameObject-duplicate_name
     enabled: 1
     severityOverride: 1
-  - ruleId: missing_script
+  - ruleId: gameObject_naming
     enabled: 1
-    severityOverride: 3
+    severityOverride: 1
   - ruleId: unusual_transform_scale
     enabled: 1
     severityOverride: 1
-  - ruleId: gameObject_naming
+  - ruleId: missing_reference
+    enabled: 1
+    severityOverride: 3
+  - ruleId: missing_prefab_asset
+    enabled: 1
+    severityOverride: 2
+  - ruleId: missing_script
+    enabled: 1
+    severityOverride: 3
+  - ruleId: rigidbody_collider
+    enabled: 1
+    severityOverride: 2
+  - ruleId: empty_gameObject
     enabled: 1
     severityOverride: 1
   - ruleId: disabled_gameObject
