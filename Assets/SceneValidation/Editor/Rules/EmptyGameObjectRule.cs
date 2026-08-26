@@ -8,6 +8,7 @@ public class EmptyGameObjectRule : ValidationRule {
 	public override string Id => "empty_gameObject";
 	public override string Name => "Empty GameObject";
 	public override string Description => "Checks the scene for GameObjects that contain no components or children.";
+	public override string AutoFixDetails => "Destroys the empty GameObject.";
 
 	public override ValidationSeverity DefaultSeverity => ValidationSeverity.Info;
 	public override ValidationCategory Category => ValidationCategory.GameObjects;

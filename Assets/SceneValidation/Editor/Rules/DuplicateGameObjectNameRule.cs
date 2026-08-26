@@ -9,6 +9,7 @@ public class DuplicateGameObjectNameRule : ValidationRule {
 	public override string Id => "gameObject-duplicate_name";
 	public override string Name => "Duplicate GameObject Name";
 	public override string Description => "Checks for GameObjects with duplicate names.";
+	public override string AutoFixDetails => "Renames the GameObject to ensure a unique name by appending a numeric suffix such as '_1', '_2', etc.";
 
 	public override ValidationSeverity DefaultSeverity => ValidationSeverity.Info;
 	public override ValidationCategory Category => ValidationCategory.GameObjects;

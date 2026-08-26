@@ -3,6 +3,7 @@ public abstract class ValidationRule {
 	public abstract string Id { get; }
 	public abstract string Name { get; }
 	public virtual string Description => string.Empty;
+	public virtual string AutoFixDetails => string.Empty;
 	
 	public abstract ValidationSeverity DefaultSeverity { get; }
 	public virtual ValidationCategory Category => ValidationCategory.General;

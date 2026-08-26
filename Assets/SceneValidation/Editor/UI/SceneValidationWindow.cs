@@ -14,6 +14,9 @@ public class SceneValidationWindow : EditorWindow {
 	private ObjectField _profileField;
 	private ValidationProfile _selectedProfile;
 
+	private EnumField _severityFilter;
+	private EnumField _categoryFilter;
+
 	private Label _sceneLabel;
 
 	private Label _errorCount;
@@ -25,7 +28,35 @@ public class SceneValidationWindow : EditorWindow {
 
 	private ValidationResultCollection _results;
 
-	private List<ValidationResult> _displayResults = new();
+	private readonly List<ValidationResult> _displayResults = new();
+
+
+	private enum ValidationSeverityFilter {
+
+		All,
+		Error,
+		Warning,
+		Info
+
+	}
+
+
+	private enum ValidationCategoryFilter {
+
+		All,
+		General,
+		References,
+		GameObjects,
+		Prefabs,
+		Rendering,
+		Physics,
+		Lighting,
+		Audio,
+		Animation,
+		Navigation,
+		Performance
+
+	}
 
 
 	[MenuItem("Tools/Scene Validation/Validation Window &v")]
@@ -207,7 +238,7 @@ public class SceneValidationWindow : EditorWindow {
 
 
 	private void BuildResultArea() {
-		var container = new TwoPaneSplitView(0, 400, TwoPaneSplitViewOrientation.Horizontal);
+		var container = new TwoPaneSplitView(0, 350f, TwoPaneSplitViewOrientation.Horizontal);
 		container.AddToClassList("validation-results-container");
 
 		var resultPanel = new VisualElement();
@@ -218,6 +249,25 @@ public class SceneValidationWindow : EditorWindow {
 
 		container.Add(resultPanel);
 		container.Add(_detailsPanel);
+
+		var filterContainer = new VisualElement();
+		filterContainer.AddToClassList("validation-filter-container");
+
+		_severityFilter = new EnumField("Severity", ValidationSeverityFilter.All);
+		_severityFilter.AddToClassList("validation-filter-field");
+		_severityFilter.AddToClassList("filter-option-field");
+
+		_categoryFilter = new EnumField("Category", ValidationCategoryFilter.All);
+		_categoryFilter.AddToClassList("validation-filter-field");
+		_categoryFilter.AddToClassList("filter-option-field");
+
+		_severityFilter.RegisterValueChangedCallback(_ => RefreshResults());
+		_categoryFilter.RegisterValueChangedCallback(_ => RefreshResults());
+
+		filterContainer.Add(_severityFilter);
+		filterContainer.Add(_categoryFilter);
+
+		resultPanel.Add(filterContainer);
 
 		_resultList = new ListView() { fixedItemHeight = 64, virtualizationMethod = CollectionVirtualizationMethod.DynamicHeight, selectionType = SelectionType.Single };
 		_resultList.selectionChanged += OnResultSelected;
@@ -312,7 +362,14 @@ public class SceneValidationWindow : EditorWindow {
 		if (_results == null)
 			return;
 
-		_displayResults = new List<ValidationResult>(_results.Results);
+		_displayResults.Clear();
+
+		foreach (var result in _results.Results) {
+			if (!MatchesFilters(result))
+				continue;
+
+			_displayResults.Add(result);
+		}
 
 		_displayResults.Sort((a, b) => GetSeverityOrder(a.Severity).CompareTo(GetSeverityOrder(b.Severity)));
 
@@ -322,9 +379,7 @@ public class SceneValidationWindow : EditorWindow {
 
 		_resultList.bindItem = (element, index) => {
 			var result = _displayResults[index];
-
 			var resultElement = (ValidationResultElement)element;
-
 			resultElement.Bind(result);
 		};
 
@@ -410,18 +465,29 @@ public class SceneValidationWindow : EditorWindow {
 			buttonRow.Add(selectButton);
 			buttonRow.Add(pingButton);
 
+			_detailsPanel.Add(buttonRow);
+
 			if (rule is { CanAutoFix: true }) {
-				var spacer = new ToolbarSpacer();
-				spacer.style.flexGrow = 1;
+				var spacer = new ToolbarSpacer { style = { flexGrow = 1 } };
 				buttonRow.Add(spacer);
 
 				var fixButton = new Button(() => AutoFixResult(result)) { text = "Auto Fix" };
 				fixButton.AddToClassList("auto-fix-button");
 
 				buttonRow.Add(fixButton);
-			}
 
-			_detailsPanel.Add(buttonRow);
+				var autoFixDetailsContainer = new VisualElement { style = { display = DisplayStyle.None } };
+				autoFixDetailsContainer.AddToClassList("autofix-container");
+
+				var autoFixDetails = new Label($"Auto Fix: {rule.AutoFixDetails}");
+				autoFixDetails.AddToClassList("universal-text");
+				autoFixDetailsContainer.Add(autoFixDetails);
+
+				fixButton.RegisterCallback<MouseEnterEvent>(_ => { autoFixDetailsContainer.style.display = DisplayStyle.Flex; });
+				fixButton.RegisterCallback<MouseLeaveEvent>(_ => { autoFixDetailsContainer.style.display = DisplayStyle.None; });
+
+				_detailsPanel.Add(autoFixDetailsContainer);
+			}
 		}
 	}
 
@@ -477,7 +543,7 @@ public class SceneValidationWindow : EditorWindow {
 		var warnings = 0;
 		var infos = 0;
 
-		foreach (var result in _results.Results) {
+		foreach (var result in _displayResults) {
 			switch (result.Severity) {
 				case ValidationSeverity.Error:
 					errors++;
@@ -637,6 +703,45 @@ public class SceneValidationWindow : EditorWindow {
 		}
 
 		EditorPrefs.SetString(LastProfileKey, guid);
+	}
+
+
+	private bool MatchesFilters(ValidationResult result) {
+		if (!MatchesSeverityFilter(result))
+			return false;
+
+		if (!MatchesCategoryFilter(result))
+			return false;
+
+		return true;
+	}
+
+
+	private bool MatchesSeverityFilter(ValidationResult result) {
+		var filter = (ValidationSeverityFilter)_severityFilter.value;
+
+		return filter switch {
+			ValidationSeverityFilter.All => true,
+			ValidationSeverityFilter.Error => result.Severity == ValidationSeverity.Error,
+			ValidationSeverityFilter.Warning => result.Severity == ValidationSeverity.Warning,
+			ValidationSeverityFilter.Info => result.Severity == ValidationSeverity.Info,
+			_ => true
+		};
+	}
+
+
+	private bool MatchesCategoryFilter(ValidationResult result) {
+		var filter = (ValidationCategoryFilter)_categoryFilter.value;
+
+		if (filter == ValidationCategoryFilter.All)
+			return true;
+
+		var rule = ValidationRuleRegistry.CreateRule(result.RuleId, result.Severity);
+
+		if (rule == null)
+			return false;
+
+		return rule.Category.ToString() == filter.ToString();
 	}
 
 }

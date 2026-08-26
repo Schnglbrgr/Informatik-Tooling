@@ -8,7 +8,8 @@ public sealed class DisabledGameObjectRule : ValidationRule {
 	public override string Id => "disabled_gameObject";
 	public override string Name => "Disabled GameObject";
 	public override string Description => "Checks the scene for disabled GameObjects.";
-	
+	public override string AutoFixDetails => "Activates the disabled GameObject.";
+
 	public override ValidationSeverity DefaultSeverity => ValidationSeverity.Warning;
 	public override ValidationCategory Category => ValidationCategory.GameObjects;
 	public override bool CanAutoFix => true;

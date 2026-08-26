@@ -113,10 +113,9 @@
 
 .validation-result-panel {
     flex-grow: 1;
-
     padding: 6px 8px;
 
-    min-width: 0;
+    min-width: 350px;
     min-height: 0;
 
     overflow: hidden;
@@ -238,4 +237,41 @@
     color: cornflowerblue;
     border-left-width: 3px;
     border-left-color: cornflowerblue;
+}
+
+
+.validation-filter-container {
+    flex-direction: row;
+    align-items: center;
+
+    min-height: 42px;
+    margin-bottom: 8px;
+}
+
+
+.validation-filter-field .unity-base-field__label {
+    min-width: 58px;
+    font-size: 11px;
+    -unity-font-style: bold;
+}
+
+
+.validation-filter-field .unity-base-field__input {
+    min-height: 24px;
+    padding-left: 4px;
+    -unity-font-style: italic;
+}
+
+
+.filter-option-field {
+    min-width: 150px;
+}
+
+.autofix-container {
+    padding: 8px 10px;
+    -unity-font-style: bold-and-italic;
+
+    background-color: #2a2a2a;
+    border-left-width: 3px;
+    border-left-color: #666666;
 }

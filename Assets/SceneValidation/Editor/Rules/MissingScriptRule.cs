@@ -8,7 +8,8 @@ public sealed class MissingScriptRule : ValidationRule {
 	public override string Id => "missing_script";
 	public override string Name => "Missing Script";
 	public override string Description => "Checks the scene for GameObjects containing missing scripts.";
-	
+	public override string AutoFixDetails => "Removes the missing script component from the GameObject.";
+
 	public override ValidationSeverity DefaultSeverity => ValidationSeverity.Error;
 	public override ValidationCategory Category => ValidationCategory.References;
 	public override bool CanAutoFix => true;

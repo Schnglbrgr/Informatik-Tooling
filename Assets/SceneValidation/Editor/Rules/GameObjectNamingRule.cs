@@ -9,6 +9,7 @@ public sealed class GameObjectNamingRule : ValidationRule {
 	public override string Id => "gameObject_naming";
 	public override string Name => "GameObject Naming";
 	public override string Description => "Checks GameObjects for invalid or suspicious names.";
+	public override string AutoFixDetails => "Converts numeric suffixes in parentheses, such as '(1)', to the '_01' format.";
 
 	public override ValidationSeverity DefaultSeverity => ValidationSeverity.Info;
 	public override ValidationCategory Category => ValidationCategory.GameObjects;
