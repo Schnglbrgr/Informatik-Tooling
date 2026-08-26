@@ -9,6 +9,8 @@ using UnityEngine.UIElements;
 
 public class SceneValidationWindow : EditorWindow {
 
+	private const string LastProfileKey = "SceneValidation.LastProfile";
+
 	private ObjectField _profileField;
 	private ValidationProfile _selectedProfile;
 
@@ -64,6 +66,21 @@ public class SceneValidationWindow : EditorWindow {
 	}
 
 
+	private ValidationProfile GetInitialProfile() {
+		ValidationProfile profile = GetLastUsedProfile();
+
+		if (profile)
+			return profile;
+
+		profile = FindDefaultProfile();
+
+		if (profile)
+			return profile;
+
+		return CreateDefaultProfile();
+	}
+
+
 	private void CreateGUI() {
 		var styleSheet = AssetDatabase.LoadAssetAtPath<StyleSheet>("Assets/SceneValidation/Editor/UI/SceneValidationWindow.uss");
 
@@ -76,25 +93,6 @@ public class SceneValidationWindow : EditorWindow {
 		BuildResultArea();
 
 		RefreshHeader();
-	}
-
-
-	private ValidationProfile FindDefaultProfile() {
-		string[] guids = AssetDatabase.FindAssets("t:ValidationProfile");
-
-		foreach (string guid in guids) {
-			string path = AssetDatabase.GUIDToAssetPath(guid);
-
-			ValidationProfile profile = AssetDatabase.LoadAssetAtPath<ValidationProfile>(path);
-
-			if (!profile)
-				continue;
-
-			if (profile.name == "DefaultValidationProfile")
-				return profile;
-		}
-
-		return null;
 	}
 
 
@@ -137,6 +135,8 @@ public class SceneValidationWindow : EditorWindow {
 		_profileField = new ObjectField { objectType = typeof(ValidationProfile), allowSceneObjects = false };
 		_profileField.RegisterValueChangedCallback(evt => {
 			_selectedProfile = evt.newValue as ValidationProfile;
+			SaveLastUsedProfile(_selectedProfile);
+			ClearResults();
 			RefreshHeader();
 		});
 
@@ -148,9 +148,12 @@ public class SceneValidationWindow : EditorWindow {
 
 		rootVisualElement.Add(header);
 
-		_selectedProfile = FindDefaultProfile();
+		_selectedProfile = GetInitialProfile();
 
 		_profileField.SetValueWithoutNotify(_selectedProfile);
+
+		if (_selectedProfile)
+			SaveLastUsedProfile(_selectedProfile);
 
 		RefreshHeader();
 	}
@@ -529,6 +532,111 @@ public class SceneValidationWindow : EditorWindow {
 			ValidationSeverity.Info => "severity-info-text",
 			_ => string.Empty
 		};
+	}
+
+
+	private ValidationProfile FindDefaultProfile() {
+		const string path = "Assets/SceneValidation/ValidationProfiles/DefaultValidationProfile.asset";
+
+		return AssetDatabase.LoadAssetAtPath<ValidationProfile>(path);
+	}
+
+
+	private ValidationProfile GetLastUsedProfile() {
+		if (!EditorPrefs.HasKey(LastProfileKey))
+			return null;
+
+		string guid = EditorPrefs.GetString(LastProfileKey);
+
+		if (string.IsNullOrEmpty(guid))
+			return null;
+
+		string path = AssetDatabase.GUIDToAssetPath(guid);
+
+		if (string.IsNullOrEmpty(path))
+			return null;
+
+		return AssetDatabase.LoadAssetAtPath<ValidationProfile>(path);
+	}
+
+
+	private ValidationProfile CreateDefaultProfile() {
+		const string folderPath = "Assets/SceneValidation/ValidationProfiles";
+		const string assetPath = folderPath + "/DefaultValidationProfile.asset";
+
+		if (!EnsureFolderExists(folderPath))
+			return null;
+
+		ValidationProfile profile = AssetDatabase.LoadAssetAtPath<ValidationProfile>(assetPath);
+
+		if (profile)
+			return profile;
+
+		profile = CreateInstance<ValidationProfile>();
+
+		profile.ResetToDefaultRules();
+
+		AssetDatabase.CreateAsset(profile, assetPath);
+		AssetDatabase.SaveAssets();
+		AssetDatabase.Refresh();
+
+		Debug.Log($"Created default Scene Validation Profile at {assetPath}");
+
+		return profile;
+	}
+
+
+	private bool EnsureFolderExists(string folderPath) {
+		if (AssetDatabase.IsValidFolder(folderPath))
+			return true;
+
+		string[] parts = folderPath.Split('/');
+
+		if (parts.Length == 0)
+			return false;
+
+		string currentPath = parts[0];
+
+		for (int i = 1; i < parts.Length; i++) {
+			string nextPath = currentPath + "/" + parts[i];
+
+			if (!AssetDatabase.IsValidFolder(nextPath)) {
+				string guid = AssetDatabase.CreateFolder(currentPath, parts[i]);
+
+				if (string.IsNullOrEmpty(guid)) {
+					Debug.LogError($"Could not create folder '{nextPath}'.");
+					return false;
+				}
+			}
+
+			currentPath = nextPath;
+		}
+
+		return AssetDatabase.IsValidFolder(folderPath);
+	}
+
+
+	private void SaveLastUsedProfile(ValidationProfile profile) {
+		if (!profile) {
+			EditorPrefs.DeleteKey(LastProfileKey);
+			return;
+		}
+
+		string path = AssetDatabase.GetAssetPath(profile);
+
+		if (string.IsNullOrEmpty(path)) {
+			EditorPrefs.DeleteKey(LastProfileKey);
+			return;
+		}
+
+		string guid = AssetDatabase.AssetPathToGUID(path);
+
+		if (string.IsNullOrEmpty(guid)) {
+			EditorPrefs.DeleteKey(LastProfileKey);
+			return;
+		}
+
+		EditorPrefs.SetString(LastProfileKey, guid);
 	}
 
 }
