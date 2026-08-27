@@ -25,7 +25,7 @@ public class RigidbodyColliderRule : ValidationRule {
 		Rigidbody rigidbody = gameObject.GetComponent<Rigidbody>();
 
 		if (rigidbody && !gameObject.GetComponent<Collider>()) {
-			results.AddResult(Severity, Id, Name, "Rigidbody without Collider.",
+			results.AddResult(Severity, Id, Name, "Rigidbody without Collider detected.",
 				$"GameObject <i><b>{gameObject.name}</b></i> contains a Rigidbody but no Collider. This may cause unexpected physics behaviour.", gameObject);
 		}
 

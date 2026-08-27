@@ -29,6 +29,19 @@ public class ValidationProfile : ScriptableObject {
 	}
 
 
+	public void ResetConfigurations() {
+		foreach (var configuration in ruleConfigurations) {
+			var rule = ValidationRuleRegistry.CreateRule(configuration.ruleId, configuration.severityOverride);
+
+			if (rule == null)
+				continue;
+
+			configuration.enabled = rule.IsEnabledByDefault;
+			configuration.severityOverride = rule.DefaultSeverity;
+		}
+	}
+
+
 	public bool HasRule(string ruleId) {
 		foreach (var rule in ruleConfigurations) {
 			if (rule.ruleId == ruleId)

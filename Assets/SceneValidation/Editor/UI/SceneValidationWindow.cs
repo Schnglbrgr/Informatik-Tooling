@@ -130,12 +130,13 @@ public class SceneValidationWindow : EditorWindow {
 
 	private void BuildToolbar() {
 		var toolbar = new Toolbar();
+		toolbar.AddToClassList("validation-toolbar");
 
 		var validateButton = new Button(ValidateScene) { text = "Validate Scene" };
-		validateButton.AddToClassList("validate-button");
+		validateButton.AddToClassList("validation-toolbar-button");
 
 		var clearButton = new Button(ClearResults) { text = "Clear" };
-		clearButton.AddToClassList("clear-button");
+		clearButton.AddToClassList("validation-toolbar-button");
 
 		toolbar.Add(validateButton);
 		toolbar.Add(clearButton);
@@ -144,6 +145,7 @@ public class SceneValidationWindow : EditorWindow {
 		toolbar.Add(spacer);
 
 		var saveButton = new Button(SaveScene) { text = "Save Scene" };
+		saveButton.AddToClassList("validation-toolbar-button");
 		saveButton.AddToClassList("save-button");
 
 		toolbar.Add(saveButton);

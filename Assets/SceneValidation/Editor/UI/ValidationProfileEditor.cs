@@ -99,7 +99,18 @@ public class ValidationProfileEditor : Editor {
 			ShowAddRuleMenu();
 		}
 
+		if (GUILayout.Button("Reset Configurations")) {
+			Undo.RecordObject(_profile, "Reset Validation Configurations");
+			_profile.ResetConfigurations();
+			EditorUtility.SetDirty(_profile);
+		}
+		
+		EditorGUILayout.Space();
+
 		if (GUILayout.Button("Reset To Default")) {
+			if (!EditorUtility.DisplayDialog("Reset Validation Profile", "This will remove all current rules and restore the default rules. Continue?", "Reset", "Cancel"))
+				return;
+
 			Undo.RecordObject(_profile, "Reset Validation Rules");
 			_profile.ResetToDefaultRules();
 			EditorUtility.SetDirty(_profile);
