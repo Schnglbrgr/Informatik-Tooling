@@ -58,7 +58,7 @@ public class MissingReferenceRule : ValidationRule {
 				continue;
 
 			results.AddResult(Severity, Id, Name, "Missing reference detected.",
-				$"Component <i><b>{component.GetType().Name}</i></b> on GameObject <i><b>{gameObject.name}</i></b> contains a missing reference in property <i><b>{property.displayName}</i></b>.",
+				$"Component <i><b>{component.GetType().Name}</b></i> on GameObject <i><b>{gameObject.name}</b></i> contains a missing reference in property <i><b>{property.displayName}</b></i>.",
 				gameObject);
 		}
 	}

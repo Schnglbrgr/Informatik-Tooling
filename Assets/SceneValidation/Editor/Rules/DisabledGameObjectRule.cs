@@ -24,7 +24,7 @@ public sealed class DisabledGameObjectRule : ValidationRule {
 
 	private void ValidateGameObject(GameObject gameObject, ValidationResultCollection results) {
 		if (!gameObject.activeSelf) {
-			results.AddResult(Severity, Id, Name, $"GameObject <i><b>{gameObject.name}</i></b> is disabled.", "This GameObject is currently inactive in the scene.", gameObject);
+			results.AddResult(Severity, Id, Name, $"GameObject <i><b>{gameObject.name}</b></i> is disabled.", "This GameObject is currently inactive in the scene.", gameObject);
 		}
 
 		foreach (Transform child in gameObject.transform) {

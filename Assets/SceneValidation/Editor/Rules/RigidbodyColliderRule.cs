@@ -26,7 +26,7 @@ public class RigidbodyColliderRule : ValidationRule {
 
 		if (rigidbody && !gameObject.GetComponent<Collider>()) {
 			results.AddResult(Severity, Id, Name, "Rigidbody without Collider.",
-				$"GameObject <i><b>{gameObject.name}</i></b> contains a Rigidbody but no Collider. This may cause unexpected physics behaviour.", gameObject);
+				$"GameObject <i><b>{gameObject.name}</b></i> contains a Rigidbody but no Collider. This may cause unexpected physics behaviour.", gameObject);
 		}
 
 		foreach (Transform child in gameObject.transform) {

@@ -23,11 +23,11 @@ public sealed class UnusualTransformScaleRule : ValidationRule {
 		var scale = gameObject.transform.localScale;
 
 		if (scale.x > 10f || scale.y > 10f || scale.z > 10f) {
-			results.AddResult(Severity, Id, Name, $"GameObject <i><b>'{gameObject.name}'</i></b> has an unusual scale.", $"Current scale: {scale}.", gameObject);
+			results.AddResult(Severity, Id, Name, $"GameObject <i><b>'{gameObject.name}'</b></i> has an unusual scale.", $"Current scale: {scale}.", gameObject);
 		}
 
 		if (scale.x < 0 || scale.y < 0 || scale.z < 0) {
-			results.AddResult(Severity, Id, Name, $"GameObject <i><b>'{gameObject.name}'</i></b> has negative scale.", "Current scale: {scale}.", gameObject);
+			results.AddResult(Severity, Id, Name, $"GameObject <i><b>'{gameObject.name}'</b></i> has negative scale.", "Current scale: {scale}.", gameObject);
 		}
 
 		foreach (Transform child in gameObject.transform) {

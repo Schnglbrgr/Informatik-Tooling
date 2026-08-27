@@ -26,7 +26,7 @@ public class MissingPrefabAssetRule : ValidationRule {
 		PrefabAssetType prefabAssetType = PrefabUtility.GetPrefabAssetType(gameObject);
 
 		if (prefabAssetType == PrefabAssetType.MissingAsset) {
-			results.AddResult(Severity, Id, Name, "Missing prefab asset.", $"GameObject <i><b>{gameObject.name}</i></b> references a missing prefab asset.", gameObject);
+			results.AddResult(Severity, Id, Name, "Missing prefab asset.", $"GameObject <i><b>{gameObject.name}</b></i> references a missing prefab asset.", gameObject);
 		}
 
 		foreach (Transform child in gameObject.transform) {

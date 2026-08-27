@@ -10,6 +10,7 @@ public enum ValidationCategory {
 	Audio,
 	Animation,
 	Navigation,
-	Performance
+	Performance,
+	Components
 
 }

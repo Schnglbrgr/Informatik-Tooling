@@ -54,7 +54,8 @@ public class SceneValidationWindow : EditorWindow {
 		Audio,
 		Animation,
 		Navigation,
-		Performance
+		Performance,
+		Components
 
 	}
 

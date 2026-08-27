@@ -3,15 +3,16 @@ using UnityEngine;
 
 
 [ValidationRule]
-public sealed class MissingScriptRule : ValidationRule {
+public class DisabledBehaviourRule : ValidationRule {
 
-	public override string Id => "missing_script";
-	public override string Name => "Missing Script";
-	public override string Description => "Checks the scene for GameObjects containing missing scripts.";
-	public override string AutoFixDetails => "Removes the missing script component from the GameObject.";
+	public override string Id => "disabled_behaviour";
+	public override string Name => "Disabled Behaviour";
+	public override string Description => "Checks the scene for GameObjects containing disabled Behaviour components.";
+	public override string AutoFixDetails => "Enables the disabled Behaviour components on this GameObject.";
 
-	public override ValidationSeverity DefaultSeverity => ValidationSeverity.Error;
+	public override ValidationSeverity DefaultSeverity => ValidationSeverity.Warning;
 	public override ValidationCategory Category => ValidationCategory.Components;
+
 	public override bool CanAutoFix => true;
 
 
@@ -28,10 +29,9 @@ public sealed class MissingScriptRule : ValidationRule {
 		Component[] components = gameObject.GetComponents<Component>();
 
 		foreach (Component component in components) {
-			if (!component)
-				results.AddResult(Severity, Id, Name, "Missing script detected.",
-					$"GameObject <i><b>{gameObject.name}</b></i> contains a missing script. " + "Missing scripts can cause unexpected behaviour " +
-					"and should normally be removed or restored.", gameObject);
+			if (component is Behaviour { enabled: false })
+				results.AddResult(Severity, Id, Name, "Disabled Behaviour component detected.",
+					$"Component <i><b>{component.GetType().Name}</b></i> on GameObject <i><b>{gameObject.name}</b></i> is disabled.", gameObject);
 		}
 
 		foreach (Transform child in gameObject.transform) {
@@ -46,14 +46,17 @@ public sealed class MissingScriptRule : ValidationRule {
 
 		Undo.RegisterFullObjectHierarchyUndo(gameObject, $"Fix {Name}");
 
-		int removedCount = GameObjectUtility.RemoveMonoBehavioursWithMissingScript(gameObject);
+		Component[] components = gameObject.GetComponents<Component>();
 
-		if (removedCount <= 0)
-			return false;
+		foreach (Component component in components) {
+			if (component is Behaviour { enabled: false } behaviour)
+				behaviour.enabled = true;
+		}
 
 		EditorUtility.SetDirty(gameObject);
 
 		return true;
 	}
+
 
 }

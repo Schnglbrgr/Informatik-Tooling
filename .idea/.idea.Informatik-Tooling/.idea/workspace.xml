@@ -9,15 +9,21 @@
   <component name="ChangeListManager">
     <list default="true" id="3a7b911e-57ef-4413-9dec-b3d1b51bf772" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.Informatik-Tooling/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Informatik-Tooling/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/SceneValidation/Editor/Core/ValidationRule.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/SceneValidation/Editor/Core/ValidationRule.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/SceneValidation/Editor/Core/ValidationCategory.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/SceneValidation/Editor/Core/ValidationCategory.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/SceneValidation/Editor/Rules/DisabledGameObjectRule.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/SceneValidation/Editor/Rules/DisabledGameObjectRule.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/SceneValidation/Editor/Rules/DuplicateGameObjectNameRule.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/SceneValidation/Editor/Rules/DuplicateGameObjectNameRule.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/SceneValidation/Editor/Rules/EmptyGameObjectRule.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/SceneValidation/Editor/Rules/EmptyGameObjectRule.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/SceneValidation/Editor/Rules/GameObjectNamingRule.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/SceneValidation/Editor/Rules/GameObjectNamingRule.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/SceneValidation/Editor/Rules/MissingPrefabAssetRule.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/SceneValidation/Editor/Rules/MissingPrefabAssetRule.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/SceneValidation/Editor/Rules/MissingReferenceRule.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/SceneValidation/Editor/Rules/MissingReferenceRule.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/SceneValidation/Editor/Rules/MissingScriptRule.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/SceneValidation/Editor/Rules/MissingScriptRule.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/SceneValidation/Editor/Rules/RigidbodyColliderRule.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/SceneValidation/Editor/Rules/RigidbodyColliderRule.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/SceneValidation/Editor/Rules/UnusualTransformScaleRule.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/SceneValidation/Editor/Rules/UnusualTransformScaleRule.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/SceneValidation/Editor/UI/SceneValidationWindow.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/SceneValidation/Editor/UI/SceneValidationWindow.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/SceneValidation/Editor/UI/SceneValidationWindow.uss" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/SceneValidation/Editor/UI/SceneValidationWindow.uss" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/SceneValidation/ValidationProfiles/DefaultValidationProfile.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/SceneValidation/ValidationProfiles/DefaultValidationProfile.asset" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scenes/Validation_DemoScene.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/Validation_DemoScene.unity" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/ValidationTests.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/ValidationTests/MissingReference.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/ValidationTests/MissingReference.cs.meta" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -30,6 +36,7 @@
   <component name="HighlightingSettingsPerFile">
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/8f156d94da2744fbaeb6f50c3a37013f573538/54/305978ca/List`1.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/8f156d94da2744fbaeb6f50c3a37013f573538/be/66d6e225/Activator.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/SceneValidation/Editor/Rules/DisabledComponentRule.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/SceneValidation/Editor/Rules/DisabledGameObjectRule.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.ide.rider@e4950c6d131b/Rider/Editor/RiderScriptEditor.cs" root0="SKIP_HIGHLIGHTING" />
   </component>
@@ -39,61 +46,61 @@
   </component>
   <component name="NextEditCompletionFeaturesState">
     <decayedCancelled>
-      <entry key="MS100" value="1.8585654364377537" />
-      <entry key="MS500" value="1.969961910341735" />
-      <entry key="S2" value="1.9924043746858184" />
-      <entry key="S5" value="1.9969552127862107" />
-      <entry key="S10" value="1.9995498967294816" />
-      <entry key="S30" value="2.2701061579082493" />
-      <entry key="S60" value="3.2408023291055508" />
-      <entry key="M2" value="5.0630318387730195" />
-      <entry key="M5" value="11.566166392677198" />
-      <entry key="M10" value="32.96847119858717" />
-      <entry key="M15" value="57.24211586718663" />
-      <entry key="M30" value="112.65266494777177" />
-      <entry key="H1" value="174.7832370688735" />
-      <entry key="H2" value="267.0093993728239" />
-      <entry key="H4" value="470.80320616701835" />
-      <entry key="D1" value="1688.1369639522347" />
-      <entry key="W1" value="2364.4010136688003" />
+      <entry key="MS100" value="2.0921444306921257" />
+      <entry key="MS500" value="3.1686507338323504" />
+      <entry key="S2" value="4.204242949540987" />
+      <entry key="S5" value="4.63225798403046" />
+      <entry key="S10" value="4.8064807938747744" />
+      <entry key="S30" value="4.935117573654428" />
+      <entry key="S60" value="5.057525533364165" />
+      <entry key="M2" value="5.763533311568698" />
+      <entry key="M5" value="8.887659484221617" />
+      <entry key="M10" value="15.827893650586356" />
+      <entry key="M15" value="26.32470234785614" />
+      <entry key="M30" value="68.79361106715761" />
+      <entry key="H1" value="148.8602517350612" />
+      <entry key="H2" value="268.44372415281896" />
+      <entry key="H4" value="486.759657775956" />
+      <entry key="D1" value="1747.364436536835" />
+      <entry key="W1" value="2472.998733104713" />
     </decayedCancelled>
     <decayedSelected>
-      <entry key="MS100" value="2.4632359025245773E-13" />
-      <entry key="MS500" value="0.004507391053599775" />
-      <entry key="S2" value="0.5395279816122777" />
-      <entry key="S5" value="1.495263004140486" />
-      <entry key="S10" value="2.114801031117373" />
-      <entry key="S30" value="2.918067218281642" />
-      <entry key="S60" value="4.084243337498872" />
-      <entry key="M2" value="6.032861378559749" />
-      <entry key="M5" value="10.398369525170096" />
-      <entry key="M10" value="19.00828745034303" />
-      <entry key="M15" value="27.88984655161103" />
-      <entry key="M30" value="48.60318883869164" />
-      <entry key="H1" value="73.74450076648125" />
-      <entry key="H2" value="117.73483100585517" />
-      <entry key="H4" value="226.67244159718666" />
-      <entry key="D1" value="807.678374458153" />
-      <entry key="W1" value="1104.6823063954143" />
+      <entry key="MS100" value="0.0" />
+      <entry key="MS500" value="0.0" />
+      <entry key="S2" value="7.114718942974918E-107" />
+      <entry key="S5" value="3.4875304841216846E-43" />
+      <entry key="S10" value="6.4209012609556075E-22" />
+      <entry key="S30" value="1.6349721956916564E-7" />
+      <entry key="S60" value="8.375592598229068E-4" />
+      <entry key="M2" value="0.06355510139440947" />
+      <entry key="M5" value="1.0161599244513464" />
+      <entry key="M10" value="4.591704635196414" />
+      <entry key="M15" value="10.099630854285774" />
+      <entry key="M30" value="30.205823939751888" />
+      <entry key="H1" value="65.51452458271912" />
+      <entry key="H2" value="120.3336680557015" />
+      <entry key="H4" value="232.3365146470598" />
+      <entry key="D1" value="834.1626212926952" />
+      <entry key="W1" value="1154.8894411207577" />
     </decayedSelected>
     <decayedShown>
-      <entry key="MS100" value="0.9466505153214968" />
-      <entry key="MS500" value="1.2172077435299933" />
-      <entry key="S2" value="2.1058189789977733" />
-      <entry key="S5" value="3.2000198487892253" />
-      <entry key="S10" value="3.926866556893627" />
-      <entry key="S30" value="5.108167246973059" />
-      <entry key="S60" value="7.273372522651277" />
-      <entry key="M2" value="11.059613667105044" />
-      <entry key="M5" value="21.932784778015915" />
-      <entry key="M10" value="51.933564630982865" />
-      <entry key="M15" value="85.08226476301314" />
-      <entry key="M30" value="161.20506516725942" />
-      <entry key="H1" value="248.4859239954195" />
-      <entry key="H2" value="384.70907591980205" />
-      <entry key="H4" value="697.4412915501985" />
-      <entry key="D1" value="2495.7958499816777" />
-      <entry key="W1" value="3469.0795634417536" />
+      <entry key="MS100" value="1.4990559665645486" />
+      <entry key="MS500" value="2.427241269415714" />
+      <entry key="S2" value="3.67741333062509" />
+      <entry key="S5" value="4.349235713609802" />
+      <entry key="S10" value="4.649206462348789" />
+      <entry key="S30" value="4.878709608026139" />
+      <entry key="S60" value="5.028715344101231" />
+      <entry key="M2" value="5.808482640039721" />
+      <entry key="M5" value="9.887172977167547" />
+      <entry key="M10" value="20.39492393643526" />
+      <entry key="M15" value="36.391450838902" />
+      <entry key="M30" value="98.95517199461202" />
+      <entry key="H1" value="214.32938583922305" />
+      <entry key="H2" value="388.73696334082643" />
+      <entry key="H4" value="719.0585506490481" />
+      <entry key="D1" value="2581.5064269179675" />
+      <entry key="W1" value="3627.8841711495234" />
     </decayedShown>
   </component>
   <component name="ProblemsViewState">
@@ -184,7 +191,7 @@
       <workItem from="1787417516119" duration="4359000" />
       <workItem from="1787501941362" duration="13375000" />
       <workItem from="1787667415769" duration="31364000" />
-      <workItem from="1787758380792" duration="9433000" />
+      <workItem from="1787758380792" duration="14809000" />
     </task>
     <servers />
   </component>

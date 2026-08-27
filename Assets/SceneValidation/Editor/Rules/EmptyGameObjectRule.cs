@@ -28,7 +28,7 @@ public class EmptyGameObjectRule : ValidationRule {
 	private void ValidateGameObject(GameObject gameObject, ValidationResultCollection results) {
 		if (gameObject.transform.childCount == 0 && gameObject.GetComponents<Component>().Length == 1) {
 
-			results.AddResult(Severity, Id, Name, "Empty GameObject detected.", $"GameObject <i><b>{gameObject.name}</i></b> contains no components and has no children.",
+			results.AddResult(Severity, Id, Name, "Empty GameObject detected.", $"GameObject <i><b>{gameObject.name}</b></i> contains no components and has no children.",
 				gameObject);
 		}
 

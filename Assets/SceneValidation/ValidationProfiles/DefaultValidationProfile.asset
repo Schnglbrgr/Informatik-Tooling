@@ -13,30 +13,36 @@ MonoBehaviour:
   m_Name: DefaultValidationProfile
   m_EditorClassIdentifier: Assembly-CSharp-Editor::ValidationProfile
   ruleConfigurations:
-  - ruleId: gameObject-duplicate_name
-    enabled: 1
-    severityOverride: 1
-  - ruleId: gameObject_naming
-    enabled: 1
-    severityOverride: 1
-  - ruleId: unusual_transform_scale
-    enabled: 1
-    severityOverride: 1
-  - ruleId: missing_reference
-    enabled: 1
-    severityOverride: 3
-  - ruleId: missing_prefab_asset
-    enabled: 1
-    severityOverride: 2
-  - ruleId: missing_script
-    enabled: 1
-    severityOverride: 3
-  - ruleId: rigidbody_collider
+  - ruleId: disabled_gameObject
     enabled: 1
     severityOverride: 2
   - ruleId: empty_gameObject
     enabled: 1
     severityOverride: 1
-  - ruleId: disabled_gameObject
+  - ruleId: rigidbody_collider
     enabled: 1
     severityOverride: 2
+  - ruleId: unapplied_prefab_override
+    enabled: 1
+    severityOverride: 1
+  - ruleId: missing_prefab_asset
+    enabled: 1
+    severityOverride: 2
+  - ruleId: gameObject_naming
+    enabled: 1
+    severityOverride: 1
+  - ruleId: missing_reference
+    enabled: 1
+    severityOverride: 3
+  - ruleId: missing_script
+    enabled: 1
+    severityOverride: 3
+  - ruleId: gameObject-duplicate_name
+    enabled: 1
+    severityOverride: 1
+  - ruleId: disabled_behaviour
+    enabled: 1
+    severityOverride: 2
+  - ruleId: unusual_transform_scale
+    enabled: 1
+    severityOverride: 1
