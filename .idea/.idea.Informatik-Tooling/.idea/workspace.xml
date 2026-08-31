@@ -8,15 +8,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="3a7b911e-57ef-4413-9dec-b3d1b51bf772" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.Informatik-Tooling/.idea/indexLayout.xml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.Informatik-Tooling/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Informatik-Tooling/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/SceneValidation/Editor/Core/ValidationProfile.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/SceneValidation/Editor/Core/ValidationProfile.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/SceneValidation/Editor/Rules/RigidbodyColliderRule.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/SceneValidation/Editor/Rules/RigidbodyColliderRule.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/SceneValidation/Editor/Rules/UnusualTransformScaleRule.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/SceneValidation/Editor/Rules/UnusualTransformScaleRule.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/SceneValidation/Editor/UI/SceneValidationWindow.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/SceneValidation/Editor/UI/SceneValidationWindow.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/SceneValidation/Editor/UI/SceneValidationWindow.uss" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/SceneValidation/Editor/UI/SceneValidationWindow.uss" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/SceneValidation/Editor/UI/ValidationProfileEditor.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/SceneValidation/Editor/UI/ValidationProfileEditor.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/SceneValidation/ValidationProfiles/DefaultValidationProfile.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/SceneValidation/ValidationProfiles/DefaultValidationProfile.asset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scenes/Validation_DemoScene.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/Validation_DemoScene.unity" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -185,7 +178,9 @@
       <workItem from="1787501941362" duration="13375000" />
       <workItem from="1787667415769" duration="31364000" />
       <workItem from="1787758380792" duration="14809000" />
-      <workItem from="1787848979530" duration="5029000" />
+      <workItem from="1787848979530" duration="6143000" />
+      <workItem from="1788019152695" duration="2110000" />
+      <workItem from="1788031496519" duration="39000" />
     </task>
     <servers />
   </component>
